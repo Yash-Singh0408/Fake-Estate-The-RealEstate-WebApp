@@ -1,0 +1,25 @@
+/* Custom styles for the toast notification */
+.custom-toast {
+  margin-top: 54px;
+  margin-left: 22px;
+    width: 300px;  /* Change the width */
+    height: 50px; /* Change the height */
+    font-size: 16px; /* Adjust font size if necessary */
+  }
+  
+.custom-toast2{
+  margin-top: 54px;
+  margin-left: 22px;
+}
+
+  .custom-toast .Toastify__toast-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+     /* Ensure content uses full height */
+    text-align: center;
+  }
+  
+  .custom-toast .Toastify__progress-bar {
+    height: 3px; /* Adjust the progress bar height */
+  }
