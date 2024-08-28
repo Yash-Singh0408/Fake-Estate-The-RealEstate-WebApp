@@ -18,7 +18,7 @@ function SignUp() {
   console.log(error);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirming password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -54,7 +54,7 @@ function SignUp() {
       !formData.confirmPassword
     ) {
       setLoading(false);
-      toast.error("All fields are required.", { className: "custom-toast" });
+      toast.error("All fields are required.");
       return;
     }
 
@@ -62,8 +62,8 @@ function SignUp() {
     if (!validatePassword(formData.password)) {
       setLoading(false);
       toast.error(
-        "Password must be at least 8 characters long and contain both numbers and letters.",
-        { className: "custom-toast2" }
+        "Password must be at least 8 characters long and contain both numbers and letters."
+       
       );
 
       return;
@@ -72,7 +72,7 @@ function SignUp() {
     // Confirm password validation
     if (formData.password !== formData.confirmPassword) {
       setLoading(false);
-      toast.error("Passwords do not match.", { className: "custom-toast" });
+      toast.error("Passwords do not match.");
 
       return;
     }
@@ -89,25 +89,23 @@ function SignUp() {
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
-        toast.error(data.message, { className: "custom-toast" });
+        toast.error(data.message);
         return;
       }
       setLoading(false);
-      toast.success("Signup successful! Redirecting to sign-in...",{className:"custom-toast"});
+      toast.success("Signup successful! Redirecting to sign-in...");
       // Delay the redirect to allow the toast to be visible
       setTimeout(() => {
         navigate("/sign-in");
-      }, 3000); // 2 seconds delay
+      }, 3000); 
     } catch (error) {
       setLoading(false);
-      toast.error("An error occurred. Please try again.", {
-        className: "custom-toast",
-      });
+      toast.error("An error occurred. Please try again.");
     }
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
+    <div className="p-3 max-w-lg mx-auto h-screen">
       <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
@@ -116,6 +114,7 @@ function SignUp() {
           id="username"
           className="border p-3 rounded-lg"
           onChange={handleChange}
+          required
         />
         <input
           type="email"
@@ -123,6 +122,7 @@ function SignUp() {
           id="email"
           className="border p-3 rounded-lg"
           onChange={handleChange}
+          required
         />
         <div className="relative">
           <input
@@ -131,6 +131,7 @@ function SignUp() {
             id="password"
             className="border p-3 rounded-lg w-full"
             onChange={handleChange}
+            required
           />
           <button
             type="button"
@@ -147,6 +148,7 @@ function SignUp() {
             id="confirmPassword"
             className="border p-3 rounded-lg w-full"
             onChange={handleChange}
+            required
           />
           <button
             type="button"
@@ -167,7 +169,7 @@ function SignUp() {
       <div className="flex gap-2 mt-4">
         <p>Have an account?</p>
         <Link to={"/sign-in"}>
-          <span className="text-blue-700 hover:underline">Sign in</span>
+          <span className="text-blue-700 restunderline">Sign in</span>
         </Link>
       </div>
       <ToastContainer

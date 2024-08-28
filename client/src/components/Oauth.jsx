@@ -3,6 +3,9 @@ import { app } from "../firebase";
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/toastStyles.css";
 
 export default function Oauth() {
   const dispatch = useDispatch();
@@ -28,19 +31,32 @@ export default function Oauth() {
       });
       const data = await res.json();
       dispatch(signInSuccess(data));
-      navigate("/");
+      toast.success("Signup successful Welcome!");
+      // Delay the redirect to allow the toast to be visible
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (error) {
       console.log("Could not sign in with google", error);
     }
   };
 
   return (
-    <button
-      onClick={handelGoogleClick}
-      type="button"
-      className="bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-90"
-    >
-      Continue With Google
-    </button>
+    <>
+      <button
+        onClick={handelGoogleClick}
+        type="button"
+        className="bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-90"
+      >
+        Continue With Google
+      </button>
+      <ToastContainer
+        position="top-right"
+        draggable
+        autoClose={2000}
+        hideProgressBar={false}
+        className="font-normal"
+      />
+    </>
   );
 }

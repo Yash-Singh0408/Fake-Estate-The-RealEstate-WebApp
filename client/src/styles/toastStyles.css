@@ -1,7 +1,6 @@
 /* Custom styles for the toast notification */
 .custom-toast {
-  margin-top: 54px;
-  margin-left: 22px;
+ 
     width: 300px;  /* Change the width */
     height: 50px; /* Change the height */
     font-size: 16px; /* Adjust font size if necessary */

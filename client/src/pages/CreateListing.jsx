@@ -67,7 +67,7 @@ export default function CreateListing() {
     }
   };
 
-  console.log(formData);
+ 
 
   const handelSubmit = async (e) => {
     e.preventDefault();

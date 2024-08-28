@@ -28,7 +28,7 @@ function SignIn() {
    dispatch(signInStart());
     // Basic form validation
     if (!formData.email || !formData.password) {
-      toast.error("All fields are required.", { className: "custom-toast" });
+      toast.error("All fields are required.");
       dispatch(signInFailure(error.message))
       return;
     }
@@ -44,25 +44,25 @@ function SignIn() {
 
       const data = await res.json();
       if (data.success === false) {
-        toast.error(data.message , { className: "custom-toast" });
+        toast.error(data.message );
        dispatch(signInFailure(data.message));
         return;
       }
-      toast.success("Sign In successful Welcome!" , { className: "custom-toast" });
+      toast.success("Sign In successful Welcome!");
       dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/");
       }, 3000); // 2 seconds delay
       
     } catch (error) {
-      toast.error("An error occurred. Please try again." , { className: "custom-toast" });
+      toast.error("An error occurred. Please try again." );
       dispatch(signInFailure(error.message));
     }
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
+    <div className="p-3 max-w-lg mx-auto h-screen">
+      <h1 className=" text-3xl text-center font-semibold my-7">Sign In</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="email"
@@ -70,6 +70,7 @@ function SignIn() {
           id="email"
           className="border p-3 rounded-lg"
           onChange={handleChange}
+          required
         />
         <div className="relative">
           <input
@@ -78,6 +79,7 @@ function SignIn() {
             id="password"
             className="border p-3 rounded-lg w-full"
             onChange={handleChange}
+            required
           />
           <button
             type="button"
@@ -98,7 +100,7 @@ function SignIn() {
       <div className="flex gap-2 mt-4">
         <p>Dont have an account?</p>
         <Link to={"/sign-up"}>
-          <span className="text-blue-700 hover:underline">Sign up</span>
+          <span className="text-blue-700 restunderline">Sign up</span>
         </Link>
       </div>
       <ToastContainer

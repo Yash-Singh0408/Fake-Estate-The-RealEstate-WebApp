@@ -3,7 +3,7 @@
 export default function About() {
   return (
     <div>
-      <div className="container mx-auto my-20">
+      <div className="container mx-auto my-20 h-screen">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2">
             <img

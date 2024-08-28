@@ -122,7 +122,7 @@ export default function Listing() {
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaBed className="text-lg" />
                 {listing.bedrooms > 1
-                  ? `${listing.bedrooms} Beedrooms `
+                  ? `${listing.bedrooms} Bedrooms`
                   : `${listing.bedrooms} Bedroom `}
               </li>
               <li className="flex items-center gap-1 whitespace-nowrap ">

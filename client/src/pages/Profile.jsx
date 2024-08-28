@@ -90,15 +90,11 @@ function Profile() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
-        toast.error("Failed to update profile. Please try again.", {
-          className: "custom-toast ",
-        });
+        toast.error("Failed to update profile. Please try again.");
         return;
       }
       dispatch(updateUserSuccess(data));
-      toast.success("Profile updated successfully!", {
-        className: "custom-toast ",
-      });
+      toast.success("Profile updated successfully!");
     } catch (error) {
       dispatch(updateUserFailure(error.message));
       toast.error("An error occurred. Please try again.");
@@ -126,9 +122,7 @@ function Profile() {
         return;
       }
       dispatch(deleteUserSuccess(data));
-      toast.success("User deleted successfully!", {
-        className: "custom-toast2",
-      });
+      toast.success("User deleted successfully!");
       setTimeout(() => {
         navigate("/sign-in");
       }, 3000); // 3 seconds delay
@@ -166,21 +160,28 @@ function Profile() {
   };
 
   // Get User Listing
+  
   const handelShowListing = async () => {
     try {
       setShowListingError(false);
       const res = await fetch(`/api/user/listing/${currentUser._id}`);
       const data = await res.json();
-
-      if (data.success === false) {
+  
+      
+      if (!Array.isArray(data) || data.length === 0) {
+        toast.error("No listing available!"); 
         setShowListingError(true);
         return;
       }
-      setUserListing(data);
+  
+      setUserListing(data);  
     } catch (error) {
       setShowListingError(true);
+      toast.error("An error occurred while fetching listings.");
     }
   };
+  
+  
 
   //Delete User Listing
   const handleDeleteListing = async (listingId) => {
@@ -213,7 +214,7 @@ function Profile() {
   // Update User Lisitng
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
+    <div className="p-3 max-w-lg mx-auto h-[1200px]">
       <h1 className="text-center font-semibold text-3xl my-7">Profile</h1>
       <form onSubmit={handelSubmit} className="flex flex-col gap-4">
         <input

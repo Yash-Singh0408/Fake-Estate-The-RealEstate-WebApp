@@ -16,7 +16,8 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [listings, setListing] = useState([]);
   const [showMore, setShowMore] = useState(false)
- 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFormUrl = urlParams.get("searchTerm");
@@ -128,25 +129,32 @@ export default function Search() {
     navigate(`/search?${searchQuery}`);
   };
 
-  const navigate = useNavigate();
+  
+  const onShowMoreClick = async () => {
+    try {
+        const numberOfListings = listings.length;
+        const startIndex = numberOfListings;
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('startIndex', startIndex);
 
-
-  const onShowMoreClick = async()=>{
-    const numberOfListing = listings.length;
-    const startIndex = numberOfListing;
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set('startIndex', startIndex);
-
-    const searchQuery = urlParams.toString();
-
-    const res = await fetch(`/api/listing/get?${searchQuery}`);
-
-    const data = await res.json();
-    if(data.length < 9){
-      setShowMore(false)
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/listing/get?${searchQuery}`);
+        
+        if (!res.ok) {
+            throw new Error('Failed to fetch listings');
+        }
+        
+        const data = await res.json();
+        
+        if (data.length < 9) {
+            setShowMore(false);
+        }
+        
+        setListing([...listings, ...data]);
+    } catch (error) {
+      error('An error occurred while fetching more listings.');
     }
-    setListing([...listings , ...data])
-  }
+};
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -286,7 +294,7 @@ export default function Search() {
 
        {showMore && (
         <button onClick={onShowMoreClick}
-        className="text-green text-center w-full p-7 hover:underline">
+        className="text-green-700 text-center w-full p-7 hover:underline">
         Show More
         </button>
        )}

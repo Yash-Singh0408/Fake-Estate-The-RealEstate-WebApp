@@ -3,7 +3,7 @@
 export default function Footer() {
   return (
     <div>
-      <footer className="bg-gray-200 text-center py-10">
+      <footer className="bg-[#afafda] text-center py-10">
         <div className="container mx-auto">
           <p className="text-gray-600 text-sm">
             &copy; 2024 Real Estate. All rights reserved.
