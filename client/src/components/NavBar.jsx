@@ -1,13 +1,14 @@
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 function NavBar() {
   const { currentUser } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
+  
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
@@ -16,16 +17,15 @@ function NavBar() {
     navigate(`/search?${searchQuery}`);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchTermFormUrl = urlParams.get('searchTerm');
-    if(searchTermFormUrl){
-      setSearchTerm(searchTermFormUrl)
+    const searchTermFormUrl = urlParams.get("searchTerm");
+    if (searchTermFormUrl) {
+      setSearchTerm(searchTermFormUrl);
     }
-
-  },[location.search])
+  }, [location.search]);
   return (
-    <header className="bg-[#afafda] shadow-md ">
+    <header className="bg-[#8083d9bb] shadow-md ">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3 ">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap ">

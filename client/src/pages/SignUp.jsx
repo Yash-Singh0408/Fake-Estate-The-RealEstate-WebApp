@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import Oauth from "../components/Oauth";
 import { toast, ToastContainer } from "react-toastify";
+import signinImage from "../images/signup1.jpg";
+import signinImagemobiel from "../images/signup2.jpg";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/toastStyles.css";
+import "../styles/signupStyles.css";  
+
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -19,6 +23,7 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [backgroundImage, setBackgroundImage] = useState(signinImage);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -104,82 +109,99 @@ function SignUp() {
     }
   };
 
+
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setBackgroundImage(window.innerWidth <= 768
+        ? signinImagemobiel
+        : signinImage);
+    };
+
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div className="p-3 max-w-lg mx-auto h-screen">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          id="username"
-          className="border p-3 rounded-lg"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          id="email"
-          className="border p-3 rounded-lg"
-          onChange={handleChange}
-          required
-        />
-        <div className="relative">
+    <div className=" h-screen flex justify-center items-center " 
+    style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          marginTop:"2px",
+          
+        }}>
+    <div className="signup-container">
+    <div className="signup-form">
+      <h2 className="signup-title">Create Your Account</h2>
+      <p className="signup-subtitle">Join us and find your dream home!</p>
+      <form onSubmit={handleSubmit}>
+        <div className="input-group">
+          <FontAwesomeIcon icon={faUser} className="input-icon" />
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+        <div className="input-group">
+          <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
+          <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+        <div className="input-group">
+          <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} onClick={() => setShowPassword(!showPassword)} className="input-icon" />
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
             id="password"
-            className="border p-3 rounded-lg w-full"
+            placeholder="Password"
+            value={formData.password}
             onChange={handleChange}
-            required
+            className="input-field"
           />
-          <button
-            type="button"
-            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-          </button>
         </div>
-        <div className="relative">
+        <div className="input-group">
+          <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="input-icon" />
           <input
             type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm Password"
             id="confirmPassword"
-            className="border p-3 rounded-lg w-full"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
             onChange={handleChange}
-            required
+            className="input-field"
           />
-          <button
-            type="button"
-            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} />
-          </button>
         </div>
-        <button
-          disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-80"
-        >
-          {loading ? "Loading..." : "Sign Up"}
+        <button type="submit" className="signup-button" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up"}
         </button>
-        <Oauth />
       </form>
-      <div className="flex gap-2 mt-4">
-        <p>Have an account?</p>
-        <Link to={"/sign-in"}>
-          <span className="text-blue-700 restunderline">Sign in</span>
-        </Link>
-      </div>
-      <ToastContainer
+      <Oauth />
+      <p className="signup-footer">
+        Already have an account? <Link className="restunderline" to="/sign-in">Sign In</Link>
+      </p>
+    </div>
+    <ToastContainer
         position="top-right"
         draggable
         autoClose={3000}
         hideProgressBar={false}
         className="font-normal"
       />
-    </div>
+  </div>
+  </div>
   );
 }
 

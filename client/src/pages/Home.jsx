@@ -6,9 +6,11 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import ListingCard from "../components/ListingCard.jsx";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import heroImage from "../images/heroimage.jpg";
+import heroImage from "../images/herobg1.jpg";
+import heroImagemobile from "../images/heromobile.jpg";
 
 const Home = () => {
+  const [backgroundImage, setBackgroundImage] = useState(heroImage);
   const [offerListings, setOfferListings] = useState([]);
   const [saleListings, setSaleListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
@@ -50,16 +52,31 @@ const Home = () => {
     fetchOfferListings();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setBackgroundImage(window.innerWidth <= 768
+        ? heroImagemobile
+        : heroImage);
+    };
+
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div>
       {/* {Top section // hero section} */}
       <div
         className="flex sm:flex-row flex-col justify-center items-center p-7 "
         style={{
-          backgroundImage: `url(${heroImage})`,
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          marginBottom:"2px",
         }}
       >
         <div className="flex flex-col gap-6 p-28  px-3 max-w-6xl mx-auto flex-1 lg:h-[82vh]">

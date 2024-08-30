@@ -1,0 +1,126 @@
+/* General Styling */
+.maincontainer {
+    animation: backgroundSlide 10s ease-in-out infinite;
+}
+
+@keyframes backgroundSlide {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.signup-container {
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 100%;
+    margin: 20px auto;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.signup-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2C3E50; 
+    text-align: center;
+}
+
+.signup-subtitle {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #34495E; 
+    text-align: center;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #2980B9; 
+   
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 40px; 
+    border-radius: 5px;
+    border: 1px solid #BDC3C7; 
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #2980B9; 
+    box-shadow: 0 0 8px rgba(41, 128, 185, 0.3); 
+    outline: none;
+    animation: focusGlow 0.3s ease-out;
+}
+
+@keyframes focusGlow {
+    from { box-shadow: 0 0 0 rgba(41, 128, 185, 0); }
+    to { box-shadow: 0 0 8px rgba(41, 128, 185, 0.3); }
+}
+
+.signup-button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 6px;
+    background: #27AE60; /* Green */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.signup-button:hover {
+    background: #1d944f; 
+    transform: scale(1.05);
+}
+
+.signup-button-google {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease, transform 0.3s ease;
+}
+
+.signup-button-google:hover {
+    transform: scale(1.05);
+}
+
+.signup-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signup-footer a {
+    color: #2980B9; 
+    text-decoration: none;
+    font-weight: bold;
+}
+
+

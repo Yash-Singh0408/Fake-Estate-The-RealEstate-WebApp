@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import {signInStart, signInSuccess, signInFailure,} from "../redux/user/userSlice.js";
 import Oauth from "../components/Oauth.jsx";
 import { toast, ToastContainer } from "react-toastify";
+import signinImage from "../images/signup1.jpg";
+import signinImagemobiel from "../images/signup2.jpg";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/toastStyles.css";
+import "../styles/signinStyles.css"
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { loading , error } = useSelector((state)=>state.user);
   const [showPassword, setShowPassword] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState(signinImage);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -52,7 +56,7 @@ function SignIn() {
       dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/");
-      }, 3000); // 2 seconds delay
+      }, 3000); 
       
     } catch (error) {
       toast.error("An error occurred. Please try again." );
@@ -60,58 +64,80 @@ function SignIn() {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setBackgroundImage(window.innerWidth <= 768
+        ? signinImagemobiel
+        : signinImage);
+    };
+
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
   return (
-    <div className="p-3 max-w-lg mx-auto h-screen">
-      <h1 className=" text-3xl text-center font-semibold my-7">Sign In</h1>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          id="email"
-          className="border p-3 rounded-lg"
-          onChange={handleChange}
-          required
-        />
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            id="password"
-            className="border p-3 rounded-lg w-full"
-            onChange={handleChange}
-            required
-          />
-          <button
-            type="button"
-            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-          </button>
+    <div className="h-screen flex justify-center items-center " 
+    style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          marginTop:"2px"
+          
+        }}>
+      <div className="signup-container">
+        <div className="signup-form">
+          <h2 className="signup-title">Sign In to Your Account</h2>
+          <p className="signup-subtitle">Welcome back! Please log in to continue.</p>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
+              <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input-field"
+                required
+              />
+            </div>
+            <div className="input-group">
+              <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} onClick={() => setShowPassword(!showPassword)} className="input-icon" />
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="input-field"
+                required
+              />
+            </div>
+            <button type="submit" className="signup-button" disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
+          </form>
+          <Oauth />
+          <p className="signup-footer">
+            Don&apos;t have an account? <Link className="restunderline" to="/sign-up">Sign Up</Link>
+          </p>
         </div>
-        <button
-   
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-80"
-        >
-          {loading ? "Loading..." : "Sign In"}
-        </button>
-        <Oauth/>
-      </form>
-      <div className="flex gap-2 mt-4">
-        <p>Dont have an account?</p>
-        <Link to={"/sign-up"}>
-          <span className="text-blue-700 restunderline">Sign up</span>
-        </Link>
-      </div>
-      <ToastContainer
+        <ToastContainer
         position="top-right"
         draggable
-        autoClose={2000}
+        autoClose={3000}
         hideProgressBar={false}
         className="font-normal"
       />
+      </div>
     </div>
   );
+  
 }
 
 export default SignIn;
