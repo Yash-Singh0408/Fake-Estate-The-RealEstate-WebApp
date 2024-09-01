@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListingCard from "../components/ListingCard";
-
+import PulseLoader from "react-spinners/PulseLoader";
+import { Empty } from 'antd';
 export default function Search() {
   const [sidebardata, setSidebardata] = useState({
     searchTerm: "",
@@ -15,7 +16,7 @@ export default function Search() {
 
   const [loading, setLoading] = useState(false);
   const [listings, setListing] = useState([]);
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,19 +51,16 @@ export default function Search() {
 
     const fetchListings = async () => {
       setLoading(true);
-      setShowMore(false)
+      setShowMore(false);
       const searchQuery = urlParams.toString();
 
       const res = await fetch(`/api/listing/get?${searchQuery}`);
 
       const data = await res.json();
-      if(data.length > 8)
-      {
-        setShowMore(true)
-      }
-      else
-      {
-        setShowMore(false)
+      if (data.length > 8) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
       }
       setListing(data);
       setLoading(false);
@@ -129,32 +127,31 @@ export default function Search() {
     navigate(`/search?${searchQuery}`);
   };
 
-  
   const onShowMoreClick = async () => {
     try {
-        const numberOfListings = listings.length;
-        const startIndex = numberOfListings;
-        const urlParams = new URLSearchParams(location.search);
-        urlParams.set('startIndex', startIndex);
+      const numberOfListings = listings.length;
+      const startIndex = numberOfListings;
+      const urlParams = new URLSearchParams(location.search);
+      urlParams.set("startIndex", startIndex);
 
-        const searchQuery = urlParams.toString();
-        const res = await fetch(`/api/listing/get?${searchQuery}`);
-        
-        if (!res.ok) {
-            throw new Error('Failed to fetch listings');
-        }
-        
-        const data = await res.json();
-        
-        if (data.length < 9) {
-            setShowMore(false);
-        }
-        
-        setListing([...listings, ...data]);
+      const searchQuery = urlParams.toString();
+      const res = await fetch(`/api/listing/get?${searchQuery}`);
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch listings");
+      }
+
+      const data = await res.json();
+
+      if (data.length < 9) {
+        setShowMore(false);
+      }
+
+      setListing([...listings, ...data]);
     } catch (error) {
-      error('An error occurred while fetching more listings.');
+      error("An error occurred while fetching more listings.");
     }
-};
+  };
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -277,13 +274,11 @@ export default function Search() {
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
           {!loading && listings.length === 0 && (
-            <p className="font-semibold text-2xl text-slate-700 ">
-              No Listing Found!
-            </p> //Other component can be added instead of <P>
+            <Empty className="w-full lg:text-4xl text-2xl custom-empty-height"  description="No Listings Found!" style={{ height: '400px' }} /> 
           )}
           {loading && (
             <p className="text-2xl text-slate-700 text-center w-full">
-              Loading...
+              <PulseLoader color="#1d2964" loading margin={2} size={15} />
             </p>
           )}
           {!loading &&
@@ -292,12 +287,14 @@ export default function Search() {
               <ListingCard key={listing._id} listing={listing} />
             ))}
 
-       {showMore && (
-        <button onClick={onShowMoreClick}
-        className="text-green-700 text-center w-full p-7 hover:underline">
-        Show More
-        </button>
-       )}
+          {showMore && (
+            <button
+              onClick={onShowMoreClick}
+              className="text-green-700 text-center w-full p-7 hover:underline"
+            >
+              Show More
+            </button>
+          )}
         </div>
       </div>
     </div>

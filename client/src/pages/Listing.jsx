@@ -5,7 +5,7 @@ import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import { useSelector } from "react-redux";
-
+import PulseLoader from "react-spinners/PulseLoader";
 import {
   FaBath,
   FaBed,
@@ -50,9 +50,9 @@ export default function Listing() {
   }, [params.listingID]);
 
   return (
-    <main>
+    <main >
       {loading && (
-        <p className="text-center my-7 text-bold text-2xl">Loading...</p>
+        <p className="text-center my-7 text-bold text-2xl"><PulseLoader color="#1d2964" loading margin={2} size={15} /></p>
       )}
       {error && (
         <p className="text-center text-red-700 my-7 text-2xl">
