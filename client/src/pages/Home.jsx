@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css/bundle";
 import ListingCard from "../components/ListingCard.jsx";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -54,16 +54,16 @@ const Home = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setBackgroundImage(window.innerWidth <= 768
-        ? heroImagemobile
-        : heroImage);
+      setBackgroundImage(
+        window.innerWidth <= 768 ? heroImagemobile : heroImage
+      );
     };
 
     handleResize();
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => window.removeEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -76,20 +76,19 @@ const Home = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          marginBottom:"2px",
+          marginBottom: "2px",
         }}
       >
         <div className="flex flex-col gap-6 p-28  px-3 max-w-6xl mx-auto flex-1 lg:h-[82vh]">
           <h1 className="text-slate-700 font-bold text-3xl lg:text-6xl">
-           <span className="bounce-animation text-blue-500">Discover</span>
-<span className="bounce-animation text-green-500">your</span>
-<span className="bounce-animation text-red-500">next</span>
-<span className="bounce-animation text-orange-500">amazing</span>
-<br />
-<span className="bounce-animation text-blue-500">home</span>
-<span className="bounce-animation text-green-500">with</span>
-<span className="bounce-animation text-red-500">simplicity</span>
-
+            <span className="bounce-animation text-blue-500">Discover</span>
+            <span className="bounce-animation text-green-500">your</span>
+            <span className="bounce-animation text-red-500">next</span>
+            <span className="bounce-animation text-orange-500">amazing</span>
+            <br />
+            <span className="bounce-animation text-blue-500">home</span>
+            <span className="bounce-animation text-green-500">with</span>
+            <span className="bounce-animation text-red-500">simplicity</span>
           </h1>
           <div className="text-gray-500 text-xs sm:text-sm">
             <span className="bounce-animation">FakeEstate</span>
@@ -124,7 +123,9 @@ const Home = () => {
               to={"/search"}
               className="text-xs sm:text-sm lg:text-xl text-blue-800 font-bold"
             >
-              <span className="animateunderline">Let&apos;s get started...</span>
+              <span className="animateunderline">
+                Let&apos;s get started...
+              </span>
             </Link>
           </span>
         </div>
@@ -136,20 +137,33 @@ const Home = () => {
       </div>
 
       {/* Slider */}
-      <Swiper navigation>
-        {offerListings &&
-          offerListings.length > 0 &&
+      <Swiper
+        modules={[Navigation, Autoplay]}
+        navigation
+        loop={true} 
+        autoplay={{
+          delay: 3000, 
+          disableOnInteraction: false, 
+        }}
+        spaceBetween={50}
+        slidesPerView={1}
+      >
+        {offerListings && offerListings.length > 0 ? (
           offerListings.map((listing) => (
             <SwiperSlide key={listing._id}>
               <div
                 style={{
-                  background: `url(${listing.imageUrls[0]}) center no-repeat `,
+                  background: `url(${listing.imageUrls[0]}) center no-repeat`,
                   backgroundSize: "cover",
+                  backgroundPosition: "center",
                 }}
-                className="h-[500px]"
+                className="h-[650px]"
               ></div>
             </SwiperSlide>
-          ))}
+          ))
+        ) : (
+          <p>No listings available</p>
+        )}
       </Swiper>
 
       {/* Different Listing results */}

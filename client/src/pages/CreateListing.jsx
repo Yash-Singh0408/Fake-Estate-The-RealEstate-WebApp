@@ -30,6 +30,10 @@ export default function CreateListing() {
     bathrooms: 1,
     regularPrice: 2000,
     discountPrice: 0,
+    area: 0,
+    yearBuilt: "",
+    propertyType: "House",
+    amenities: "",
   });
   const [uploading, setUploading] = useState(false);
   const [imageUploadError, setImageUploadError] = useState(null);
@@ -37,43 +41,31 @@ export default function CreateListing() {
   const [loading, setloading] = useState(false);
 
   const handelChange = (e) => {
-    if (e.target.id === "sale" || e.target.id === "rent") {
+    const { id, value, type, checked } = e.target;
+  
+    if (id === "sale" || id === "rent") {
       setFormData({
         ...formData,
-        type: e.target.id,
+        type: id,
       });
-    }
-
-    if (
-      e.target.id === "parking" ||
-      e.target.id === "furnished" ||
-      e.target.id === "offer"
-    ) {
+    } else if (type === "checkbox") {
       setFormData({
         ...formData,
-        [e.target.id]: e.target.checked,
+        [id]: checked,
       });
-    }
-
-    if (
-      e.target.type === "number" ||
-      e.target.type === "text" ||
-      e.target.type === "textarea"
-    ) {
+    } else {
       setFormData({
         ...formData,
-        [e.target.id]: e.target.value,
+        [id]: value,
       });
     }
   };
-
- 
 
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
       if (formData.imageUrls.length < 1)
-        return setError("Must upload atleast one image");
+        return setError("Must upload at least one image");
       if (+formData.regularPrice < +formData.discountPrice)
         return setError("Discounted Price must be lower than regular price");
 
@@ -161,7 +153,7 @@ export default function CreateListing() {
   };
 
   return (
-    <main className="p-3 mx-auto max-w-4xl">
+    <main className="p-3 mx-auto max-w-4xl mb-12">
       <h1 className="text-center text-3xl font-semibold my-7">
         Create a listing
       </h1>
@@ -195,6 +187,60 @@ export default function CreateListing() {
             onChange={handelChange}
             value={formData.address}
           />
+
+          <div className="flex gap-4 flex-wrap">
+            <div className="flex flex-row items-center gap-2 mt-4">
+              <label htmlFor="area">Area (sq ft)</label>
+              <input
+                type="number"
+                placeholder="Area (sq ft)"
+                className="border p-3 rounded-lg w-1/2"
+                id="area"
+                onChange={handelChange}
+                value={formData.area}
+                required
+              />
+              <label htmlFor="yearBuilt">Year Built</label>
+              <input
+                type="number"
+                placeholder="Year Built"
+                className="border p-3 rounded-lg  w-1/2"
+                id="yearBuilt"
+                onChange={handelChange}
+                value={formData.yearBuilt}
+              />
+            </div>
+            <div className="flex flex-row items-center gap-2 w-full my-4">
+              <label htmlFor="propertyType">Property Type</label>
+              <select
+                id="propertyType"
+                className="border p-3 rounded-lg w-full"
+                onChange={handelChange} 
+                value={formData.propertyType}
+              >
+                <option value="House">House</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Condo">Condo</option>
+                <option value="Townhouse">Townhouse</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          
+          <div className="flex flex-row items-center gap-2">
+            <label htmlFor="amenities">Amenities</label>
+            <input
+              type="text"
+              placeholder="Amenities (comma separated)"
+              className="border p-3 rounded-lg w-full"
+              id="amenities"
+              onChange={handelChange}
+              value={formData.amenities}
+              required
+            />
+          </div>
+
           <div className="flex gap-6 flex-wrap">
             <div className="flex gap-2">
               <input
@@ -272,7 +318,7 @@ export default function CreateListing() {
                 onChange={handelChange}
                 value={formData.bathrooms}
               />
-              <p>BathRooms</p>
+              <p>Bathrooms</p>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -280,15 +326,15 @@ export default function CreateListing() {
                 type="number"
                 id="regularPrice"
                 min={2000}
-                max={1000000}
+                max={10000000}
                 required
                 onChange={handelChange}
                 value={formData.regularPrice}
               />
               <div className="flex flex-col items-center">
-                <p>Regular Prices</p>
-                {formData.type === 'rent' && (
-                  <span className='text-xs'>(₹ / month)</span>
+                <p>Regular Price</p>
+                {formData.type === "rent" && (
+                  <span className="text-xs">(₹ / month)</span>
                 )}
               </div>
             </div>
@@ -300,16 +346,16 @@ export default function CreateListing() {
                   type="number"
                   id="discountPrice"
                   min={0}
-                  max={1000000}
+                  max={10000000}
                   required
                   onChange={handelChange}
                   value={formData.discountPrice}
                 />
 
                 <div className="flex flex-col items-center">
-                  <p>Discounted Prices</p>
-                  {formData.type === 'rent' && (
-                    <span className='text-xs'>(₹ / month)</span>
+                  <p>Discounted Price</p>
+                  {formData.type === "rent" && (
+                    <span className="text-xs">(₹ / month)</span>
                   )}
                 </div>
               </div>

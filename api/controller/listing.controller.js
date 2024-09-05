@@ -88,26 +88,51 @@ export const getListings = async (req, res, next) => {
       parking = { $in: [false, true] };
     }
 
-    let type = req.query.type
+    let type = req.query.type;
     if (type === undefined || type === "all") {
-      type = { $in: ['rent', 'sale'] };
+      type = { $in: ["rent", "sale"] };
     }
 
-    const searchTerm = req.query.searchTerm || '';
+    const searchTerm = req.query.searchTerm || "";
 
-    const sort = req.query.sort || 'createdAt'
+    const sort = req.query.sort || "createdAt";
 
-    const order = req.query.order || 'desc'
+    const order = req.query.order || "desc";
+
+    // New Filters
+    const minArea = parseInt(req.query.minArea) || 0;
+    const maxArea = parseInt(req.query.maxArea) || 10000;
+
+    const minYearBuilt = parseInt(req.query.minYearBuilt) || 0;
+    const maxYearBuilt = parseInt(req.query.maxYearBuilt) || new Date().getFullYear();
+
+    let propertyType = req.query.propertyType;
+    if (propertyType === undefined || propertyType === "all") {
+      propertyType = { $in: ["House", "Apartment", "Condo", "Townhouse", "Other"] };
+    }
+
+    let amenities = req.query.amenities;
+    if (amenities) {
+      amenities = { $all: amenities.split(",") };
+    } else {
+      amenities = undefined;
+    }
 
     const listings = await Listing.find({
-      name:{$regex: searchTerm, $options:'i'},
+      name: { $regex: searchTerm, $options: "i" },
       offer,
       furnished,
       parking,
       type,
-    }).sort(
-      {[sort]:order}
-    ).limit(limit).skip(startIndex)
+      area: { $gte: minArea, $lte: maxArea },
+      yearBuilt: { $gte: minYearBuilt, $lte: maxYearBuilt },
+      propertyType,
+      ...(amenities && { amenities }),
+    })
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+
     return res.status(200).json(listings);
   } catch (error) {
     next(error);

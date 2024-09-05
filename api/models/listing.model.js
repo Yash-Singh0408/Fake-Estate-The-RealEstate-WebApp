@@ -46,6 +46,24 @@ const listingSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    amenities: {
+      type: [String],
+      required: false,
+      default: [],
+    },
+    area: {
+      type: Number,
+      required: false,
+    },
+    yearBuilt: {
+      type: Number,
+      required: false,
+    },
+    propertyType: {
+      type: String,
+      required: true,
+      enum: ['House', 'Apartment', 'Condo', 'Townhouse', 'Other'],
+    },
     imageUrls: {
       type: Array,
       required: true,
